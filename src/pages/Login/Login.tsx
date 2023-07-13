@@ -20,7 +20,13 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center h-screen bg-gray-100">
+    <div
+      className="flex flex-col justify-center items-center h-screen bg-gray-100"
+      style={{
+        backgroundImage: "url('https://images.unsplash.com/photo-1519682337058-a94d519337bc?ixid=MnwxMjA3fDB8MHxwcm9maWxlLXBhZ2V8MXw2MDIwMDM4fHxlbnwwfHx8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1170&q=80')",
+        backgroundSize: 'cover',
+      }}
+    >
       <h1 className="text-4xl font-bold mb-8">Login</h1>
       <form className="bg-white shadow-lg rounded-lg px-12 py-10 w-96" onSubmit={handleSubmit}>
         <div className="mb-6">
@@ -28,7 +34,7 @@ const Login = () => {
             Email
           </label>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="appearance-none bg-gray-100 border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring focus:border-blue-500"
             id="email"
             type="email"
             placeholder="Enter your email"
@@ -41,7 +47,7 @@ const Login = () => {
             Password
           </label>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="appearance-none bg-gray-100 border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring focus:border-blue-500"
             id="password"
             type="password"
             placeholder="Enter your password"
