@@ -1,6 +1,24 @@
 import { Link } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../redux/hook";
+import { signOut } from "firebase/auth";
+import { toast } from "react-toastify";
+import auth from "../config/firebase.config";
+import { setUser } from "../redux/features/user/userSlice";
 
 const Navbar = () => {
+
+  const {user} = useAppSelector(state => state.user)
+  const dispatch = useAppDispatch()
+
+  const handleLogOut = () => {
+    signOut(auth)
+    .then(() => {
+      toast.success("Log Out Successful")
+      dispatch(setUser(null))
+    })
+    .catch(e => console.log(e))
+  }
+
     return (
         <div className="navbar bg-base-200">
         <div className="navbar-start">
@@ -38,8 +56,15 @@ const Navbar = () => {
           </ul>
         </div>
         <div className="navbar-end space-x-3">
-          <Link to='/login' className="btn btn-primary">Login</Link>
+          {
+            user.email ?
+            <button onClick={handleLogOut} className="btn btn-accent">Log Out</button>
+            :
+            <>
+            <Link to='/login' className="btn btn-primary">Login</Link>
           <Link to='/signup' className="btn btn-secondary">Sign Up</Link>
+          </>
+          }
         </div>
       </div>
       

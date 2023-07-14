@@ -1,14 +1,31 @@
 import { FormEvent, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../redux/hook';
+import { createUser } from '../../redux/features/user/userSlice';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
+
+  const {error, user} = useAppSelector(state => state.user)
+  const dispatch = useAppDispatch()
+
+  const navigate = useNavigate()
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  if(user.email) {
+    toast.success("Account created successful")
+    navigate('/')
+  }
+
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // Here, you can perform login logic using email and password state variables
-    console.log('Email:', email);
-    console.log('Password:', password);
+    
+    dispatch(createUser({ email, password })).catch((error) => {
+      console.log(error);
+    });
+
     // Reset the form
     setEmail('');
     setPassword('');
@@ -55,6 +72,9 @@ const SignUp = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
+        {
+          error && <p className='my-4 text-red-600 font-medium'>{error}</p>
+        }
         <div className="flex items-center justify-between">
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
