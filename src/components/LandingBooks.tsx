@@ -8,7 +8,7 @@ const LandingBooks = () => {
     return (
         <div className="my-20 w-11/12 mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
            {
-            data.data.slice(0,10).map((book: IBooks) =>  <div className="bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition duration-300 ease-in-out">
+            data?.data?.slice(0,10).map((book: IBooks) =>  <div className="bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition duration-300 ease-in-out">
             <div className="h-48 bg-gray-800 flex justify-center items-center">
                 <svg
                 className="w-16 h-16 text-white animate-pulse"
