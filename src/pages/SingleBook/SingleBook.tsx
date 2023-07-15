@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   useDeleteBookMutation,
   useGetSingleBookQuery,
+  useUpdateReviewMutation,
 } from "../../redux/features/books/bookApi";
 import Loading from "../../components/Loading";
 import { useState } from "react";
@@ -21,6 +22,11 @@ const SingleBook = () => {
 
   const { data: book, isLoading } = useGetSingleBookQuery(id as string);
   const [deleteBook, { isSuccess }] = useDeleteBookMutation();
+  const [updateReview, { isSuccess: succ, isError: err }] =
+    useUpdateReviewMutation();
+
+  console.log(succ);
+  console.log(err);
 
   if (isSuccess) {
     toast.success("Book Deleted Successful");
@@ -52,6 +58,16 @@ const SingleBook = () => {
     }
   };
 
+  const handleReview = () => {
+    const submitData = {
+      comment: title,
+    };
+
+    updateReview({ data: submitData, id }).catch((e) => console.log(e));
+
+    window.location.reload();
+  };
+
   return (
     <div className="my-20 w-11/12 mx-auto">
       <div className="md:flex justify-between  gap-10">
@@ -80,18 +96,23 @@ const SingleBook = () => {
             </button>
           </div>
         </div>
-        <div className="md:w-6/12 mt-10 md:mt-0 overflow-auto h-64 border rounded-md p-5 shadow-xl relative">
+        <div className="md:w-6/12 mt-10 md:mt-0  h-64 border rounded-md p-5 shadow-xl relative overflow-y-scroll">
           {book?.data?.reviews?.map((text: string) => {
-            <div className="flex items-center gap-3">
-              <div className="avatar">
-                <div className="w-8 mask mask-triangle">
-                  <img src="https://images.unsplash.com/photo-1532012197267-da84d127e765?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=387&q=80" />
+            return (
+              <div className="flex items-center gap-3" key={text}>
+                <div className="avatar">
+                  <div className="w-8 mask mask-triangle">
+                    <img
+                      src="https://images.unsplash.com/photo-1532012197267-da84d127e765?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=387&q=80"
+                      alt="avatar"
+                    />
+                  </div>
                 </div>
+                <p className="text-blue-500 font-medium">{text}</p>
               </div>
-              <p className="font-bold text-gray-800">{text}</p>
-            </div>;
+            );
           })}
-          <div className="absolute bottom-0 left-0 right-0 focus:outline-0 flex justify-center items-center">
+          <div className="sticky mt-8 bottom-0 left-0 right-0 focus:outline-0 flex justify-center items-center">
             <input
               type="text"
               id="title"
@@ -100,7 +121,9 @@ const SingleBook = () => {
               onChange={(e) => setTitle(e.target.value)}
               className="w-full border-gray-300 border p-2 rounded focus:outline-0"
             />
-            <button className="btn btn-ghost">&#9166;</button>
+            <button onClick={handleReview} className="btn btn-ghost">
+              &#9166;
+            </button>
           </div>
         </div>
       </div>
