@@ -1,8 +1,9 @@
+import { IBooks } from "../../../types";
 import { api } from "../api/api";
 
 interface GetBooksQueryParams {
   searchTerm?: string;
-  date?: string;
+  date?: string | number;
   genre?: string;
 }
 
@@ -15,7 +16,7 @@ const bookApi = api.injectEndpoints({
           queryParameters.append("searchTerm", data.searchTerm);
         }
         if (data.date) {
-          queryParameters.append("publication_date", data.date);
+          queryParameters.append("publication_date", data.date as string);
         }
         if (data.genre) {
           queryParameters.append("genre", data.genre);
@@ -23,7 +24,36 @@ const bookApi = api.injectEndpoints({
         return `/books?${queryParameters.toString()}`;
       },
     }),
+    getSingleBook: builder.query({
+      query: (id: string) => `/books/${id}`,
+    }),
+    postBooks: builder.mutation({
+      query: (data: IBooks) => ({
+        url: "/books",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    updateBooks: builder.mutation({
+      query: ({ data, id }: { data: IBooks; id: string }) => ({
+        url: `/books/${id}`,
+        method: "PATCH",
+        body: data,
+      }),
+    }),
+    deleteBook: builder.mutation({
+      query: (id: string) => ({
+        url: `/books/${id}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
-export const { useGetBooksQuery } = bookApi;
+export const {
+  useGetBooksQuery,
+  usePostBooksMutation,
+  useGetSingleBookQuery,
+  useDeleteBookMutation,
+  useUpdateBooksMutation,
+} = bookApi;
