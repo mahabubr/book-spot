@@ -24,7 +24,6 @@ const wishlistSlice = api.injectEndpoints({
     }),
     getAllBookmark: builder.query({
       query: (id: string) => `/bookmark/${id}`,
-      providesTags: ["bookmark"],
     }),
   }),
 });
