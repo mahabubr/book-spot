@@ -57,8 +57,11 @@ const EditBook = () => {
       reviews: singleBook?.data?.reviews,
     };
 
-    updateBook({ data: submitData, id }).catch((e: any) => console.log(e));
-
+    if (typeof submitData === "string" && typeof id === "string") {
+      updateBook({ data: submitData, id }).catch((e) => console.log(e));
+    } else {
+      console.log("submitData or id is not a valid string");
+    }
     setTitle("");
     setAuthor("");
     setGenre("");

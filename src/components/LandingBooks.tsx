@@ -7,7 +7,19 @@ import { useGetBooksQuery } from "../redux/features/books/bookApi";
 import { IBooks } from "../types";
 
 const LandingBooks = () => {
-  const { data } = useGetBooksQuery("");
+  interface GetBooksQueryParams {
+    searchTerm?: string;
+    date?: string | number;
+    genre?: string;
+  }
+
+  const queryData: GetBooksQueryParams = {
+    genre: "",
+    searchTerm: "",
+    date: "",
+  };
+
+  const { data } = useGetBooksQuery(queryData);
 
   return (
     <div className="my-20 w-11/12 mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">

@@ -79,7 +79,11 @@ const SingleBook = () => {
       comment: title,
     };
 
-    updateReview({ data: submitData, id }).catch((e) => console.log(e));
+    if (typeof submitData === "string" && typeof id === "string") {
+      updateReview({ data: submitData, id }).catch((e) => console.log(e));
+    } else {
+      console.log("submitData or id is not a valid string");
+    }
 
     setTitle("");
   };
