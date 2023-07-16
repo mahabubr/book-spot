@@ -40,6 +40,7 @@ const SingleBook = () => {
 
   if (WishlistSuccess) {
     toast.success("Book Added Successful. go to wishlist");
+    navigate("/wishlist");
     return;
   }
 
@@ -74,7 +75,9 @@ const SingleBook = () => {
   };
 
   const handleWishlist = () => {
-    postWishlist(book?.data).catch((e) => console.log(e));
+    postWishlist({ ...book?.data, user_email: user?.email }).catch((e) =>
+      console.log(e)
+    );
   };
 
   return (

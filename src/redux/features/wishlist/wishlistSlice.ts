@@ -1,16 +1,19 @@
-import { IBooks } from "../../../types";
 import { api } from "../api/api";
 
 const wishlistSlice = api.injectEndpoints({
   endpoints: (builder) => ({
     postWishlist: builder.mutation({
-      query: (data: IBooks) => ({
+      query: (data) => ({
         url: "/wishlist",
         method: "POST",
         body: data,
       }),
     }),
+    getAllWishlist: builder.query({
+      query: (id: string) => `/wishlist/${id}`,
+    }),
   }),
 });
 
-export const { usePostWishlistMutation } = wishlistSlice;
+export const { usePostWishlistMutation, useGetAllWishlistQuery } =
+  wishlistSlice;
