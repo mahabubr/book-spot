@@ -12,7 +12,10 @@ import Loading from "../../components/Loading";
 import { useState } from "react";
 import { useAppSelector } from "../../redux/hook";
 import { toast } from "react-toastify";
-import { usePostWishlistMutation } from "../../redux/features/wishlist/wishlistSlice";
+import {
+  usePostBookmarkMutation,
+  usePostWishlistMutation,
+} from "../../redux/features/wishlist/wishlistSlice";
 
 const SingleBook = () => {
   const { id } = useParams();
@@ -27,6 +30,8 @@ const SingleBook = () => {
   const [updateReview] = useUpdateReviewMutation();
   const [postWishlist, { isSuccess: WishlistSuccess }] =
     usePostWishlistMutation();
+  const [postBookmark, { isSuccess: BookmarkSuccess }] =
+    usePostBookmarkMutation();
 
   if (isSuccess) {
     toast.success("Book Deleted Successful");
@@ -41,6 +46,11 @@ const SingleBook = () => {
   if (WishlistSuccess) {
     toast.success("Book Added Successful. go to wishlist");
     navigate("/wishlist");
+    return;
+  }
+  if (BookmarkSuccess) {
+    toast.success("Book Added Successful. go to bookmark");
+    navigate("/bookmark");
     return;
   }
 
@@ -80,6 +90,12 @@ const SingleBook = () => {
     );
   };
 
+  const handleBookmark = () => {
+    postBookmark({ ...book?.data, user_email: user?.email }).catch((e) =>
+      console.log(e)
+    );
+  };
+
   return (
     <div className="my-20 w-11/12 mx-auto">
       <div className="md:flex justify-between items-center  gap-10">
@@ -88,7 +104,9 @@ const SingleBook = () => {
             <button onClick={handleWishlist} className="btn btn-success btn-sm">
               Add to wishlist
             </button>
-            <button className="btn btn-neutral btn-sm">Bookmark</button>
+            <button onClick={handleBookmark} className="btn btn-neutral btn-sm">
+              Bookmark
+            </button>
           </div>
           <h3 className="text-xl font-bold mb-2 text-gray-900">
             {book?.data?.title}

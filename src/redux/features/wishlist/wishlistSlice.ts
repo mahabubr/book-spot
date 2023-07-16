@@ -12,8 +12,22 @@ const wishlistSlice = api.injectEndpoints({
     getAllWishlist: builder.query({
       query: (id: string) => `/wishlist/${id}`,
     }),
+    postBookmark: builder.mutation({
+      query: (data) => ({
+        url: "/bookmark",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    getAllBookmark: builder.query({
+      query: (id: string) => `/bookmark/${id}`,
+    }),
   }),
 });
 
-export const { usePostWishlistMutation, useGetAllWishlistQuery } =
-  wishlistSlice;
+export const {
+  usePostWishlistMutation,
+  useGetAllWishlistQuery,
+  usePostBookmarkMutation,
+  useGetAllBookmarkQuery
+} = wishlistSlice;
