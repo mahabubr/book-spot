@@ -1,53 +1,62 @@
-import { FormEvent, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../redux/hook';
-import { createUser } from '../../redux/features/user/userSlice';
-import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { FormEvent, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../redux/hook";
+import { createUser } from "../../redux/features/user/userSlice";
+import { toast } from "react-toastify";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const SignUp = () => {
+  const { error, user } = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
 
-  const {error, user} = useAppSelector(state => state.user)
-  const dispatch = useAppDispatch()
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  if(user.email) {
-    toast.success("Account created successful")
-    navigate('/')
+  if (user.email) {
+    toast.success("Account created successful");
+    navigate(from, { replace: true });
   }
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    
+
     dispatch(createUser({ email, password })).catch((error) => {
       console.log(error);
     });
 
     // Reset the form
-    setEmail('');
-    setPassword('');
+    setEmail("");
+    setPassword("");
   };
 
   const handleGoogleLogin = () => {
     // Implement Google login logic here
-    console.log('Perform Google login');
+    console.log("Perform Google login");
   };
 
   return (
     <div
       className="flex flex-col justify-center items-center h-screen bg-gray-100"
       style={{
-        backgroundImage: "url('https://images.unsplash.com/photo-1519682337058-a94d519337bc?ixid=MnwxMjA3fDB8MHxwcm9maWxlLXBhZ2V8MXw2MDIwMDM4fHxlbnwwfHx8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1170&q=80')",
-        backgroundSize: 'cover',
+        backgroundImage:
+          "url('https://images.unsplash.com/photo-1519682337058-a94d519337bc?ixid=MnwxMjA3fDB8MHxwcm9maWxlLXBhZ2V8MXw2MDIwMDM4fHxlbnwwfHx8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1170&q=80')",
+        backgroundSize: "cover",
       }}
     >
       <h1 className="text-4xl font-bold mb-8">Sign Up</h1>
-      <form className="bg-white shadow-lg rounded-lg px-12 py-10 w-96" onSubmit={handleSubmit}>
+      <form
+        className="bg-white shadow-lg rounded-lg px-12 py-10 w-96"
+        onSubmit={handleSubmit}
+      >
         <div className="mb-6">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+          <label
+            className="block text-gray-700 text-sm font-bold mb-2"
+            htmlFor="email"
+          >
             Email
           </label>
           <input
@@ -60,7 +69,10 @@ const SignUp = () => {
           />
         </div>
         <div className="mb-6">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+          <label
+            className="block text-gray-700 text-sm font-bold mb-2"
+            htmlFor="password"
+          >
             Password
           </label>
           <input
@@ -72,9 +84,7 @@ const SignUp = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        {
-          error && <p className='my-4 text-red-600 font-medium'>{error}</p>
-        }
+        {error && <p className="my-4 text-red-600 font-medium">{error}</p>}
         <div className="flex items-center justify-between">
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"

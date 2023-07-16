@@ -81,7 +81,7 @@ const SingleBook = () => {
 
     updateReview({ data: submitData, id }).catch((e) => console.log(e));
 
-    window.location.reload();
+    setTitle("");
   };
 
   const handleWishlist = () => {
