@@ -3,7 +3,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { ChangeEvent, useState } from "react";
-import { useGetBooksQuery } from "../../redux/features/books/bookApi";
+import {
+  useGetAllBookQuery,
+  useGetBooksQuery,
+} from "../../redux/features/books/bookApi";
 import { IBooks } from "../../types";
 import { Link } from "react-router-dom";
 
@@ -25,6 +28,7 @@ const AllBooks = () => {
   };
 
   const { data } = useGetBooksQuery(queryData);
+  const { data: AllBooks } = useGetAllBookQuery("");
 
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -37,7 +41,7 @@ const AllBooks = () => {
   };
 
   const genreData: string[] = Array.from(
-    new Set<string>(data?.data?.map((g: { genre: string }) => g.genre))
+    new Set<string>(AllBooks?.data?.map((g: { genre: string }) => g.genre))
   );
 
   const handleGenreSelection = (genre: string) => {
@@ -46,7 +50,7 @@ const AllBooks = () => {
   return (
     <div className="my-20 w-11/12 mx-auto">
       <div className="w-full mb-10 gap-5">
-        <div>
+        <div className="flex items-center">
           <input
             type="text"
             className="px-4 w-full py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
@@ -54,18 +58,6 @@ const AllBooks = () => {
             value={searchTerm}
             onChange={handleSearch}
           />
-        </div>
-        <div className="md:w-6/12 place-items-center mt-5">
-          <div>
-            <input
-              type="range"
-              min={1900}
-              max={2025}
-              className="range range-primary"
-              onChange={handleDate}
-            />
-            <p>{date}</p>
-          </div>
           <div className="dropdown">
             <label tabIndex={0} className="btn m-1">
               Filter by genre
@@ -80,6 +72,18 @@ const AllBooks = () => {
                 </li>
               ))}
             </ul>
+          </div>
+        </div>
+        <div className="md:w-6/12 place-items-center mt-5">
+          <div>
+            <input
+              type="range"
+              min={1900}
+              max={2025}
+              className="range range-primary"
+              onChange={handleDate}
+            />
+            <p>{date}</p>
           </div>
         </div>
       </div>

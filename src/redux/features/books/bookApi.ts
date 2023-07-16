@@ -24,6 +24,9 @@ const bookApi = api.injectEndpoints({
         return `/books?${queryParameters.toString()}`;
       },
     }),
+    getAllBook: builder.query({
+      query: () => `/books`,
+    }),
     getSingleBook: builder.query({
       query: (id: string) => `/books/${id}`,
     }),
@@ -64,4 +67,5 @@ export const {
   useDeleteBookMutation,
   useUpdateBooksMutation,
   useUpdateReviewMutation,
+  useGetAllBookQuery,
 } = bookApi;

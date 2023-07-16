@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
@@ -11,6 +12,7 @@ import Loading from "../../components/Loading";
 import { useState } from "react";
 import { useAppSelector } from "../../redux/hook";
 import { toast } from "react-toastify";
+import { usePostWishlistMutation } from "../../redux/features/wishlist/wishlistSlice";
 
 const SingleBook = () => {
   const { id } = useParams();
@@ -22,11 +24,9 @@ const SingleBook = () => {
 
   const { data: book, isLoading } = useGetSingleBookQuery(id as string);
   const [deleteBook, { isSuccess }] = useDeleteBookMutation();
-  const [updateReview, { isSuccess: succ, isError: err }] =
-    useUpdateReviewMutation();
-
-  console.log(succ);
-  console.log(err);
+  const [updateReview] = useUpdateReviewMutation();
+  const [postWishlist, { isSuccess: WishlistSuccess }] =
+    usePostWishlistMutation();
 
   if (isSuccess) {
     toast.success("Book Deleted Successful");
@@ -36,6 +36,11 @@ const SingleBook = () => {
 
   if (isLoading) {
     return <Loading />;
+  }
+
+  if (WishlistSuccess) {
+    toast.success("Book Added Successful. go to wishlist");
+    return;
   }
 
   const handleEdit = (id: string) => {
@@ -68,10 +73,20 @@ const SingleBook = () => {
     window.location.reload();
   };
 
+  const handleWishlist = () => {
+    postWishlist(book?.data).catch((e) => console.log(e));
+  };
+
   return (
     <div className="my-20 w-11/12 mx-auto">
-      <div className="md:flex justify-between  gap-10">
+      <div className="md:flex justify-between items-center  gap-10">
         <div className="py-6 px-4 bg-slate-100 rounded-xl md:w-8/12">
+          <div className="flex justify-between items-center mb-4">
+            <button onClick={handleWishlist} className="btn btn-success btn-sm">
+              Add to wishlist
+            </button>
+            <button className="btn btn-neutral btn-sm">Bookmark</button>
+          </div>
           <h3 className="text-xl font-bold mb-2 text-gray-900">
             {book?.data?.title}
           </h3>
