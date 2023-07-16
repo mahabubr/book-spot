@@ -9,6 +9,7 @@ import SingleBook from "../pages/SingleBook/SingleBook";
 import EditBook from "../pages/SingleBook/EditBook/EditBook";
 import Wishlist from "../pages/Wishlist/Wishlist";
 import Bookmark from "../pages/Bookmark/Bookmark";
+import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
   {
@@ -33,23 +34,43 @@ const router = createBrowserRouter([
       },
       {
         path: "/create-book",
-        element: <CreateBook />,
+        element: (
+          <PrivateRoute>
+            <CreateBook />,
+          </PrivateRoute>
+        ),
       },
       {
         path: "/book/:id",
-        element: <SingleBook />,
+        element: (
+          <PrivateRoute>
+            <SingleBook />,
+          </PrivateRoute>
+        ),
       },
       {
         path: "/book/edit/:id",
-        element: <EditBook />,
+        element: (
+          <PrivateRoute>
+            <EditBook />,
+          </PrivateRoute>
+        ),
       },
       {
         path: "/wishlist",
-        element: <Wishlist />,
+        element: (
+          <PrivateRoute>
+            <Wishlist />,
+          </PrivateRoute>
+        ),
       },
       {
         path: "/bookmark",
-        element: <Bookmark />,
+        element: (
+          <PrivateRoute>
+            <Bookmark />,
+          </PrivateRoute>
+        ),
       },
     ],
   },

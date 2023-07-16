@@ -48,9 +48,16 @@ const Navbar = () => {
             <Link to="/create-book">
               <li className="btn btn-ghost">Create Book</li>
             </Link>
-            <Link to="/wishlist">
-              <li className="btn btn-ghost">Wishlist</li>
-            </Link>
+            {user?.email && (
+              <>
+                <Link to="/wishlist">
+                  <li className="btn btn-ghost">Wishlist</li>
+                </Link>
+                <Link to="/bookmark">
+                  <li className="btn btn-ghost">Bookmark</li>
+                </Link>
+              </>
+            )}
           </ul>
         </div>
         <Link to="/" className="btn btn-ghost  text-xl uppercase">
@@ -65,9 +72,16 @@ const Navbar = () => {
           <Link to="/create-book">
             <li className="btn btn-ghost">Create Book</li>
           </Link>
-          <Link to="/wishlist">
-            <li className="btn btn-ghost">Wishlist</li>
-          </Link>
+          {user?.email && (
+            <>
+              <Link to="/wishlist">
+                <li className="btn btn-ghost">Wishlist</li>
+              </Link>
+              <Link to="/bookmark">
+                <li className="btn btn-ghost">Bookmark</li>
+              </Link>
+            </>
+          )}
         </ul>
       </div>
       <div className="navbar-end space-x-3">
